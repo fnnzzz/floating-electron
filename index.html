@@ -14,6 +14,7 @@
 			overflow: hidden;
 			height: 100vh;
 			width: 100vw;
+			display: none;
 		}
 
 		.btn {
@@ -58,6 +59,28 @@
 			height: 10px;
 			cursor: pointer;
 		}
+		
+		#form {
+			text-align: center;
+			padding: 200px;
+		}
+
+		#form input {
+			width: 70%;
+			outline: none;
+			border: 1px solid #999;
+			padding: 10px 5px;
+			font-size: 22px;
+			font-family: sans-serif;
+		}
+
+		#form p {
+			margin: 0;
+			margin-top: 15px;
+			font-size: 15px;
+			color: #999;
+			font-family: sans-serif;
+		}
 	</style>
 
 </head>
@@ -67,19 +90,29 @@
 	<img src="assets/scroll-icon.svg" class="btn scroll-btn" title="enable/disable scrollbars">
 	<img src="assets/on-top.svg" class="btn ontop-btn" title="always on top (enable/disable)">
 	<img src="assets/close.svg" class="btn close-btn">
+	
+	<div class="paste_url_here">
+		<form action="#" id="form">
+			<input id="url_input" type="text" placeholder="paste url here...">
+			<p>* some websites block display in the iframe</p>
+		</form>
+	</div>
 
-    <iframe id="content" scrolling="no" src="http://oll.tv" frameborder="0"></iframe>
+    <iframe id="content" scrolling="no" src="" frameborder="0"></iframe>
 </body>
 
 <script>
 	(function(){
 		const remote = require('electron').remote
+		const validator = require('validator')
 		const scrollBtn = document.querySelector('.scroll-btn')
 		const onTopBtn = document.querySelector('.ontop-btn')
 		const closeBtn = document.querySelector('.close-btn')
 		const contentIframe = document.querySelector('#content')
+		const urlWrapper = document.querySelector('.paste_url_here')
+		const form = document.querySelector('#form')
+		const inputUrl = document.querySelector('#url_input')
 		const currWin = remote.getCurrentWindow()
-
 
 
 		scrollBtn.addEventListener('click', () => {
@@ -93,7 +126,24 @@
 		})
 
 		closeBtn.addEventListener('click', () => {
-			currWin.close()
+			currWin.destroy()
+		})
+
+
+		function isHttpPrefix(url) {
+			if (!/^(f|ht)tps?:\/\//i.test(url)) {
+				url = "http://" + url
+			}
+			return url
+		}
+
+		form.addEventListener('submit', (e) => {
+			e.preventDefault()
+			if( validator.isURL(inputUrl.value) ) {
+				urlWrapper.style.display = 'none'
+				contentIframe.src = isHttpPrefix(inputUrl.value)
+				contentIframe.style.display = 'block'
+			}
 		})
 		
 	})()
