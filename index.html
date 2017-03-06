@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Electron wrap</title>
+	<title>Floating Electron</title>
 
 	<style type="text/css" media="screen">
 		body {
@@ -16,42 +16,58 @@
 			width: 100vw;
 		}
 
-		.resize-btn, .scroll-btn, .ontop-btn {
+		.btn {
 			position: absolute;
 			width: 20px;
 			height: 20px;
-			top: 10px;
-			right: 20px;
 			z-index: 100;
 			opacity: 0.1;
+			top: 10px;
 			transition: opacity 0.4s ease;
 		}
 
-		.resize-btn {
-			-webkit-app-region: drag;
-		}
-
-		.scroll-btn:hover, .resize-btn:hover, .ontop-btn:hover {
+		.btn:hover {
 			transition: opacity 0.4s ease;
 			opacity: 1;
 		}
 
-		.scroll-btn {
+		.resize-btn {
 			right: 50px;
+		}
+
+		.resize-btn {
+			cursor: move;
+			-webkit-app-region: drag;
+		}
+
+
+		.scroll-btn {
+			right: 80px;
 		}
 
 		.ontop-btn {
 			right: auto;
 			left: 10px;
 		}
+
+		.close-btn {
+			opacity: 0.5;
+			top: 5px;
+			right: 5px;
+			width: 10px;
+			height: 10px;
+			cursor: pointer;
+		}
 	</style>
 
 </head>
 
 <body>
-	<img src="resize-icon.svg" class="resize-btn">
-	<img src="scroll-icon.svg" class="scroll-btn">
-	<img src="on-top.svg" class="ontop-btn">
+	<img src="assets/resize-icon.svg" class="btn resize-btn" title="drag">
+	<img src="assets/scroll-icon.svg" class="btn scroll-btn" title="enable/disable scrollbars">
+	<img src="assets/on-top.svg" class="btn ontop-btn" title="always on top (enable/disable)">
+	<img src="assets/close.svg" class="btn close-btn">
+
     <iframe id="content" scrolling="no" src="http://oll.tv" frameborder="0"></iframe>
 </body>
 
@@ -60,6 +76,7 @@
 		const remote = require('electron').remote
 		const scrollBtn = document.querySelector('.scroll-btn')
 		const onTopBtn = document.querySelector('.ontop-btn')
+		const closeBtn = document.querySelector('.close-btn')
 		const contentIframe = document.querySelector('#content')
 		const currWin = remote.getCurrentWindow()
 
@@ -67,15 +84,16 @@
 
 		scrollBtn.addEventListener('click', () => {
 			const scrollStatus = contentIframe.scrolling
-
 			scrollStatus === 'no' ? contentIframe.scrolling = 'yes' : contentIframe.scrolling = 'no'
-
 			contentIframe.src = contentIframe.contentWindow.location.href // reload iframe for enable/disable scrollbars
 		})
-
 		
 		onTopBtn.addEventListener('click', () => {
 			currWin.setAlwaysOnTop( !currWin.isAlwaysOnTop() )
+		})
+
+		closeBtn.addEventListener('click', () => {
+			currWin.close()
 		})
 		
 	})()

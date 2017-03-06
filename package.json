@@ -1,15 +1,17 @@
 {
-  "name": "electron-olltv",
+  "name": "floating-electron",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron main.js"
+    "start": "electron index.js",
+    "build": "electron-packager . --name=\"floating-electron\" --out=\"build\" --overwrite=\"true\""
   },
-  "author": "",
+  "author": "Vlad Feninets <v.feninets@gmail.com>",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^1.6.1"
+    "electron": "^1.6.1",
+    "electron-packager": "^8.5.2"
   }
 }
