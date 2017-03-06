@@ -70,7 +70,7 @@
 
 			scrollStatus === 'no' ? contentIframe.scrolling = 'yes' : contentIframe.scrolling = 'no'
 
-			contentIframe.src = contentIframe.src // reload iframe for enable/disable scrollbars
+			contentIframe.src = contentIframe.contentWindow.location.href // reload iframe for enable/disable scrollbars
 		})
 
 		
