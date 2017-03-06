@@ -2,87 +2,7 @@
 <html>
 <head>
 	<title>Floating Electron</title>
-
-	<style type="text/css" media="screen">
-		body {
-			margin: 0px;
-			padding: 0px;
-			overflow: hidden;
-		}
-
-		iframe {
-			overflow: hidden;
-			height: 100vh;
-			width: 100vw;
-			display: none;
-		}
-
-		.btn {
-			position: absolute;
-			width: 20px;
-			height: 20px;
-			z-index: 100;
-			opacity: 0.1;
-			top: 10px;
-			transition: opacity 0.4s ease;
-		}
-
-		.btn:hover {
-			transition: opacity 0.4s ease;
-			opacity: 1;
-		}
-
-		.resize-btn {
-			right: 50px;
-		}
-
-		.resize-btn {
-			cursor: move;
-			-webkit-app-region: drag;
-		}
-
-
-		.scroll-btn {
-			right: 80px;
-		}
-
-		.ontop-btn {
-			right: auto;
-			left: 10px;
-		}
-
-		.close-btn {
-			opacity: 0.5;
-			top: 5px;
-			right: 5px;
-			width: 10px;
-			height: 10px;
-			cursor: pointer;
-		}
-		
-		#form {
-			text-align: center;
-			padding: 200px;
-		}
-
-		#form input {
-			width: 70%;
-			outline: none;
-			border: 1px solid #999;
-			padding: 10px 5px;
-			font-size: 22px;
-			font-family: sans-serif;
-		}
-
-		#form p {
-			margin: 0;
-			margin-top: 15px;
-			font-size: 15px;
-			color: #999;
-			font-family: sans-serif;
-		}
-	</style>
-
+	<link rel="stylesheet" href="assets/styles.css">
 </head>
 
 <body>
@@ -115,20 +35,22 @@
 		const currWin = remote.getCurrentWindow()
 
 
+		// enable/disable visibility iframe scrollbars
 		scrollBtn.addEventListener('click', () => {
 			const scrollStatus = contentIframe.scrolling
 			scrollStatus === 'no' ? contentIframe.scrolling = 'yes' : contentIframe.scrolling = 'no'
 			contentIframe.src = contentIframe.contentWindow.location.href // reload iframe for enable/disable scrollbars
 		})
 		
+		// enable/disable AlwaysTop window
 		onTopBtn.addEventListener('click', () => {
 			currWin.setAlwaysOnTop( !currWin.isAlwaysOnTop() )
 		})
 
+		// click on exit button
 		closeBtn.addEventListener('click', () => {
 			currWin.destroy()
 		})
-
 
 		function isHttpPrefix(url) {
 			if (!/^(f|ht)tps?:\/\//i.test(url)) {
