@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Electron wrap</title>
+
+	<style type="text/css" media="screen">
+		body {
+			margin: 0px;
+			padding: 0px;
+			overflow: hidden;
+		}
+
+		iframe {
+			overflow: hidden;
+			height: 100vh;
+			width: 100vw;
+		}
+
+		.resize-btn, .scroll-btn, .ontop-btn {
+			position: absolute;
+			width: 20px;
+			height: 20px;
+			top: 10px;
+			right: 20px;
+			z-index: 100;
+			opacity: 0.1;
+			transition: opacity 0.4s ease;
+		}
+
+		.resize-btn {
+			-webkit-app-region: drag;
+		}
+
+		.scroll-btn:hover, .resize-btn:hover, .ontop-btn:hover {
+			transition: opacity 0.4s ease;
+			opacity: 1;
+		}
+
+		.scroll-btn {
+			right: 50px;
+		}
+
+		.ontop-btn {
+			right: auto;
+			left: 10px;
+		}
+	</style>
+
+</head>
+
+<body>
+	<img src="resize-icon.svg" class="resize-btn">
+	<img src="scroll-icon.svg" class="scroll-btn">
+	<img src="on-top.svg" class="ontop-btn">
+    <iframe id="content" scrolling="no" src="https://oll.tv" frameborder="0"></iframe>
+</body>
+
+<script>
+	(function(){
+		const remote = require('electron').remote
+		const scrollBtn = document.querySelector('.scroll-btn')
+		const onTopBtn = document.querySelector('.ontop-btn')
+		const contentIframe = document.querySelector('#content')
+		const currWin = remote.getCurrentWindow()
+
+
+
+		scrollBtn.addEventListener('click', () => {
+			const scrollStatus = contentIframe.scrolling
+
+			scrollStatus === 'no' ? contentIframe.scrolling = 'yes' : contentIframe.scrolling = 'no'
+
+			contentIframe.src = contentIframe.src // reload iframe for enable/disable scrollbars
+		})
+
+		
+		onTopBtn.addEventListener('click', () => {
+			currWin.setAlwaysOnTop( !currWin.isAlwaysOnTop() )
+		})
+		
+	})()
+</script>
+
+</html>
