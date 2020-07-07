@@ -11,7 +11,7 @@
   "author": "Vlad Feninets <v.feninets@gmail.com>",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^1.6.1",
+    "electron": "^9.1.0",
     "electron-packager": "^8.5.2",
     "validator": "^7.0.0"
   }
